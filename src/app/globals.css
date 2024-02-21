@@ -1,4 +1,12 @@
 /* Сброс CSS */
+
+:root {
+  --basic-color: #041d32;
+  --light-blue-color: #586a78;
+  --gray-color: #d1d1d6;
+  --orange-color: #f2cc58;
+}
+
 *,
 *::before,
 *::after {
@@ -19,6 +27,7 @@ body {
   font-family: Montserrat; /* Устанавливаем базовый шрифт для документа */
   -webkit-font-smoothing: antialiased; /* Улучшаем отображение шрифтов для Webkit браузеров */
   -moz-osx-font-smoothing: grayscale; /* Улучшаем отображение шрифтов для Firefox на MacOS */
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Стили для ссылок */
