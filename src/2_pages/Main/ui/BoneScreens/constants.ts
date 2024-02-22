@@ -1,1 +1,6 @@
-export const TAB_NAMES = ["All groups", "Train", "Value", "Test"];
+export const TAB_NAMES = [
+  { directory: "/", name: "All groups" },
+  { directory: "train", name: "Train" },
+  { directory: "value", name: "Value" },
+  { directory: "test", name: "Test" },
+];

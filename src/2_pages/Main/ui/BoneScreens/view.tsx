@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TAB_NAMES } from "./constants";
 import {
   PageNumbers,
@@ -9,11 +9,16 @@ import {
   TabWrapper,
   Tab,
 } from "./styles";
+import { useAlbumImages } from "./api";
 
 export default function BoneScreens() {
-  const [activeTab, setActiveTab] = useState(TAB_NAMES[0]);
+  const [activeTab, setActiveTab] = useState(TAB_NAMES[0].directory);
+  const { data: imagesData, isLoading: isLoadingImages } =
+    useAlbumImages(activeTab);
 
   const handleTabClick = (tab: string) => setActiveTab(tab);
+
+  if (isLoadingImages) return <div>Loading albums...</div>;
 
   return (
     <BoneScreensContainer>
@@ -24,16 +29,26 @@ export default function BoneScreens() {
         </PageNumbers>
       </InfoWrapper>
       <TabWrapper>
-        {TAB_NAMES.map((tab) => (
+        {TAB_NAMES.map(({ directory, name }) => (
           <Tab
-            key={tab}
-            isActive={activeTab === tab}
-            onClick={() => handleTabClick(tab)}
+            key={directory}
+            isActive={activeTab === directory}
+            onClick={() => handleTabClick(directory)}
           >
-            {tab}
+            {name}
           </Tab>
         ))}
       </TabWrapper>
+      {imagesData?.map((image: any, index: number) => (
+        <img
+          key={index}
+          src={`http://dataspan.frontend-home-assignment.s3.amazonaws.com/${encodeURIComponent(
+            image.Key
+          )}`}
+          alt="Image"
+          style={{ width: "128px", height: "128px" }}
+        />
+      ))}
     </BoneScreensContainer>
   );
 }
