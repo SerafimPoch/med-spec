@@ -6,6 +6,8 @@
 
 This application is a specialized medical tool designed for healthcare professionals to view and analyze X-ray images. It provides an intuitive interface for navigating through medical imaging data, supporting the decision-making process in diagnostics and treatment planning.
 
+#Visit http://159.100.13.163:3000
+
 ## Key Features
 
 - **View X-ray Images**: Easily load and display X-ray images for examination.
