@@ -83,6 +83,7 @@ export const ImageWrapper = styled.div`
   img {
     width: 100px;
     height: 100px;
+    cursor: pointer;
   }
 `;
 
