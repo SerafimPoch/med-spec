@@ -42,6 +42,7 @@ export const TabWrapper = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--gray-color);
+  margin-bottom: 17px;
 `;
 
 export const Tab = styled.button<ITab>`
@@ -69,5 +70,67 @@ export const Tab = styled.button<ITab>`
     border-bottom: ${({ isActive }) =>
       isActive ? "1px solid var(--orange-color)" : "none"};
     transition: border-bottom 0.3s;
+  }
+`;
+
+export const ImageWrapper = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+  grid-gap: 12px;
+  min-height: 660px;
+
+  img {
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+export const StyledPaginateContainer = styled.div`
+  .pagination {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .pagination li a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: bold;
+    border: 1px solid #dddddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+  }
+
+  .pagination li a:hover {
+    background-color: #eeeeee;
+  }
+
+  .pagination li.active a {
+    background-color: #f0c14b;
+    color: white;
+    border-color: #f0c14b;
+  }
+
+  .pagination li.previous {
+    display: none;
+  }
+
+  .pagination li.next {
+    display: none;
   }
 `;

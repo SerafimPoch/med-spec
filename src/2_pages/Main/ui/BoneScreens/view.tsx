@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
-import { TAB_NAMES } from "./constants";
+import { useMemo, useState } from "react";
+import Image from "next/image";
+import { Loader } from "@/6_shared/components/Loader";
+import { AWS_IMG_LINK, TAB_NAMES } from "./constants";
+import ReactPaginate from "react-paginate";
 import {
   PageNumbers,
   Title,
@@ -8,24 +11,42 @@ import {
   BoneScreensContainer,
   TabWrapper,
   Tab,
+  ImageWrapper,
+  StyledPaginateContainer,
 } from "./styles";
 import { useAlbumImages } from "./api";
 
 export default function BoneScreens() {
   const [activeTab, setActiveTab] = useState(TAB_NAMES[0].directory);
+  const [currentPage, setCurrentPage] = useState(0);
+  const imagesPerPage = 50;
+
   const { data: imagesData, isLoading: isLoadingImages } =
     useAlbumImages(activeTab);
 
   const handleTabClick = (tab: string) => setActiveTab(tab);
 
-  if (isLoadingImages) return <div>Loading albums...</div>;
+  const handlePageClick = (selectedItem: any) => {
+    setCurrentPage(selectedItem.selected);
+  };
+
+  const displayedImages = imagesData
+    ?.filter((image: any) => image.Key.endsWith(".jpg"))
+    .slice(currentPage * imagesPerPage, (currentPage + 1) * imagesPerPage);
+
+  const currentPageAmount = useMemo(
+    () => (currentPage + 1) * imagesPerPage,
+    [currentPage]
+  );
 
   return (
     <BoneScreensContainer>
       <InfoWrapper>
-        <Title>Bone-fracture-detection </Title>
+        <Title>Bone-fracture-detection</Title>
         <PageNumbers>
-          54 <LightText>of</LightText> 100 <LightText>images</LightText>
+          {currentPageAmount}
+          <LightText>of</LightText> {imagesData?.length}{" "}
+          <LightText>images</LightText>
         </PageNumbers>
       </InfoWrapper>
       <TabWrapper>
@@ -39,16 +60,33 @@ export default function BoneScreens() {
           </Tab>
         ))}
       </TabWrapper>
-      {imagesData?.map((image: any, index: number) => (
-        <img
-          key={index}
-          src={`http://dataspan.frontend-home-assignment.s3.amazonaws.com/${encodeURIComponent(
-            image.Key
-          )}`}
-          alt="Image"
-          style={{ width: "128px", height: "128px" }}
+      <ImageWrapper>
+        {isLoadingImages ? (
+          <Loader />
+        ) : (
+          displayedImages.map((image: any) => (
+            <Image
+              key={image.Key}
+              src={`${AWS_IMG_LINK}/${encodeURIComponent(image.Key)}`}
+              alt={image.Key}
+              width={100}
+              height={100}
+              unoptimized
+            />
+          ))
+        )}
+      </ImageWrapper>
+      <StyledPaginateContainer>
+        <ReactPaginate
+          breakLabel={"..."}
+          pageCount={Math.ceil(imagesData?.length / imagesPerPage)}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
         />
-      ))}
+      </StyledPaginateContainer>
     </BoneScreensContainer>
   );
 }
